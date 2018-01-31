@@ -218,7 +218,6 @@ void setup() {
 
 void loop()
 {
-  int counter;
   if((millis() - ul_3_Second_timer) > 3000)
   {
     bt_3_S_Time_Up = true;
@@ -288,13 +287,13 @@ void loop()
         ui_Left_Motor_Speed = constrain(ui_Motors_Speed + ui_Left_Motor_Offset, 1600, 2100);
         ui_Right_Motor_Speed = constrain(ui_Motors_Speed + ui_Right_Motor_Offset, 1600, 2100);
 
-       /**************************************************************************************
+       /***************************************************************************************
          Add line tracking code here. 
          Adjust motor speed according to information from line tracking sensors and 
          possibly encoder counts.
        /*************************************************************************************/
-
-           if (ui_Middle_Line_Tracker_Data < (ui_Middle_Line_Tracker_Dark - ci_Line_Tracker_Tolerance)) {
+       int counter;
+ if (ui_Middle_Line_Tracker_Data < (ui_Middle_Line_Tracker_Dark - ci_Line_Tracker_Tolerance)) {
             servo_LeftMotor.writeMicroseconds(ui_Right_Motor_Speed);
             servo_RightMotor.writeMicroseconds(ui_Left_Motor_Speed);
           }
@@ -584,7 +583,6 @@ void Ping()
   Serial.println(ul_Echo_Time/58); //divide time by 58 to get distance in cm 
 #endif
 }  
-
 
 
 
