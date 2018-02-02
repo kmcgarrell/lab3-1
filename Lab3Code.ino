@@ -284,8 +284,8 @@ void loop()
 #endif
 
        // set motor speeds
-        ui_Left_Motor_Speed = constrain(ui_Motors_Speed + ui_Left_Motor_Offset, 1600, 2100);
-        ui_Right_Motor_Speed = constrain(ui_Motors_Speed + ui_Right_Motor_Offset, 1600, 2100);
+        ui_Left_Motor_Speed = constrain(ui_Motors_Speed + ui_Left_Motor_Offset, 1650, 2100);
+        ui_Right_Motor_Speed = constrain(ui_Motors_Speed + ui_Right_Motor_Offset, 1650, 2100);
 
        /***************************************************************************************
          Add line tracking code here. 
@@ -293,24 +293,28 @@ void loop()
          possibly encoder counts.
        /*************************************************************************************/
        int counter;
- if (ui_Middle_Line_Tracker_Data < (ui_Middle_Line_Tracker_Dark - ci_Line_Tracker_Tolerance)) {
+      
+         if (ui_Middle_Line_Tracker_Data > (ui_Middle_Line_Tracker_Light + ci_Line_Tracker_Tolerance)) {
             servo_LeftMotor.writeMicroseconds(ui_Right_Motor_Speed);
             servo_RightMotor.writeMicroseconds(ui_Left_Motor_Speed);
           }
 
-          if (ui_Left_Line_Tracker_Data < (ui_Left_Line_Tracker_Dark - ci_Line_Tracker_Tolerance)) {
+          if (ui_Left_Line_Tracker_Data > (ui_Left_Line_Tracker_Light + ci_Line_Tracker_Tolerance)) {
             servo_LeftMotor.writeMicroseconds(ci_Left_Motor_Stop);
-            servo_RightMotor.writeMicroseconds(ui_Left_Motor_Speed);
+            servo_RightMotor.writeMicroseconds(ui_Right_Motor_Speed);
           }
           
-          if (ui_Right_Line_Tracker_Data < (ui_Right_Line_Tracker_Dark - ci_Line_Tracker_Tolerance)) {
+          if (ui_Right_Line_Tracker_Data > (ui_Right_Line_Tracker_Light + ci_Line_Tracker_Tolerance)) {
             servo_LeftMotor.writeMicroseconds(ui_Left_Motor_Speed);
             servo_RightMotor.writeMicroseconds(ci_Right_Motor_Stop);
           }
 
-          if ((ui_Right_Line_Tracker_Data < (ui_Right_Line_Tracker_Dark - ci_Line_Tracker_Tolerance))&&(ui_Left_Line_Tracker_Data < (ui_Left_Line_Tracker_Dark - ci_Line_Tracker_Tolerance))&&(ui_Middle_Line_Tracker_Data < (ui_Middle_Line_Tracker_Dark - ci_Line_Tracker_Tolerance)))  {
+          if ((ui_Middle_Line_Tracker_Data > (ui_Middle_Line_Tracker_Light + ci_Line_Tracker_Tolerance))&&(ui_Left_Line_Tracker_Data > (ui_Left_Line_Tracker_Light + ci_Line_Tracker_Tolerance)) &&(ui_Right_Line_Tracker_Data > (ui_Right_Line_Tracker_Light + ci_Line_Tracker_Tolerance)))  {
             counter++;
-            if (counter == 500){
+            servo_LeftMotor.writeMicroseconds(ui_Right_Motor_Speed);
+            servo_RightMotor.writeMicroseconds(ui_Left_Motor_Speed);
+            if (counter == 500)
+            {
               ui_Robot_State_Index = 0;
             }
           }
